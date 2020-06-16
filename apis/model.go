@@ -2,9 +2,9 @@ package apis
 
 //StockReport model
 type StockReport struct {
-	ID     string
+	ID     string  `json:"id" firestore:"-"`
 	User   User    `json:"user" firestore:"user"`
-	Stocks []Stock `json"stocks" firestore"stocks"`
+	Stocks []Stock `json:"stocks" firestore:"stocks"`
 }
 
 //Stock model
@@ -16,5 +16,5 @@ type Stock struct {
 type User struct {
 	FirstName string `json:"firstName" firestore:"firstName"`
 	LastName  string `json:"lastName" firestore:"lastName"`
-	Email     string `json:"email" firestore"email"`
+	Email     string `json:"email" firestore:"email"`
 }
