@@ -1,2 +1,4 @@
 /apis/credentials.json
 .DS_Store
+vendor
+cmd
