@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"log"
 
 	"cloud.google.com/go/pubsub"
+	"github.com/theshabh58/stock-reporter/rest-apis/apis"
 )
 
 //Publish a message on to a topic
-func publish(wr io.Writer, projectID, topicID string, msg []string) error {
+func Publish(wr io.Writer, projectID, topicID string, msg []apis.StockData) error {
 
 	ctx := context.Background()
 	pubsubclient, err := GetPubSubClient(ctx, projectID)
@@ -24,7 +24,7 @@ func publish(wr io.Writer, projectID, topicID string, msg []string) error {
 	var results []*pubsub.PublishResult
 
 	r := topic.Publish(ctx, &pubsub.Message{
-		Data: []byte("Test"),
+		Data: []byte(fmt.Sprintf("%v", msg)),
 	})
 
 	results = append(results, r)
@@ -32,9 +32,9 @@ func publish(wr io.Writer, projectID, topicID string, msg []string) error {
 	for _, r := range results {
 		id, err := r.Get(ctx)
 		if err != nil {
-			log.Fatalf("Error getting id %v", err)
+			return fmt.Errorf("Error getting id %v", err)
 		}
-		fmt.Printf("Published a message to topic %s, with messageID: %v", topicID, id)
+		fmt.Printf("Published a message to topic %s, with messageID: %v\n", topicID, id)
 	}
 
 	return nil
