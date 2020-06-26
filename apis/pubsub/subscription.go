@@ -17,26 +17,23 @@ func PullMessageAsync(w io.Writer, projectID, subscriberID string) error {
 		return fmt.Errorf("Failed to create new pubsub client %v", err)
 	}
 
-	//consume 10 messages
-	var mutex sync.Mutex
-	recievedMessages := 10
-	subscribe := client.Subscription(subscriberID)
-
+	// Consume 10 messages.
+	var mu sync.Mutex
+	received := 0
+	sub := client.Subscription(subscriberID)
 	cctx, cancel := context.WithCancel(ctx)
-	err = subscribe.Receive(cctx, func(ctx context.Context, msg *pubsub.Message) {
-		mutex.Lock()
-		defer mutex.Unlock()
-		fmt.Fprintf(w, "Got message: %q \n", string(msg.Data))
+	err = sub.Receive(cctx, func(ctx context.Context, msg *pubsub.Message) {
+		mu.Lock()
+		defer mu.Unlock()
+		fmt.Fprintf(w, "Got message: %q\n", string(msg.Data))
 		msg.Ack()
-		recievedMessages++
-		if recievedMessages == 10 {
+		received++
+		if received == 10 {
 			cancel()
 		}
 	})
-
 	if err != nil {
-		return fmt.Errorf("Error recieving messages %v", err)
+		return fmt.Errorf("Receive: %v", err)
 	}
-
 	return nil
 }
