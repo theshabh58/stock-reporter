@@ -8,8 +8,8 @@ import (
 	"cloud.google.com/go/pubsub"
 )
 
-//PullMessageAsync pull messages from a subscribed topic
-func PullMessageAsync(w io.Writer, projectID, subscriberID string) error {
+//PullStockPriceMessages pull messages from a subscribed topic
+func PullStockPriceMessages(w io.Writer, projectID, subscriberID string) error {
 	ctx := context.Background()
 	client, err := GetPubSubClient(ctx, projectID)
 	if err != nil {
@@ -18,9 +18,11 @@ func PullMessageAsync(w io.Writer, projectID, subscriberID string) error {
 
 	sub := client.Subscription(subscriberID)
 
-	err = sub.Receive(ctx, func(ctx context.Context, m *pubsub.Message) {
+	cctx, cancel := context.WithCancel(ctx)
+	err = sub.Receive(cctx, func(ctx context.Context, m *pubsub.Message) {
 		fmt.Printf("Message Recieved: %s\n", m.Data)
 		m.Ack()
+		cancel()
 	})
 
 	if err != nil {
