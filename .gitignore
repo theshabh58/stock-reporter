@@ -1,4 +1,5 @@
 /apis/credentials.json
+.vscode
 .env
 .DS_Store
 vendor
