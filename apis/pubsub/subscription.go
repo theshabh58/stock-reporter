@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"time"
 
 	"cloud.google.com/go/pubsub"
 )
@@ -18,11 +19,11 @@ func PullStockPriceMessages(w io.Writer, projectID, subscriberID string) error {
 
 	sub := client.Subscription(subscriberID)
 
-	cctx, cancel := context.WithCancel(ctx)
+	cctx, cancel := context.WithTimeout(ctx, 20000*time.Millisecond)
+	defer cancel()
 	err = sub.Receive(cctx, func(ctx context.Context, m *pubsub.Message) {
 		fmt.Printf("Message Recieved: %s\n", m.Data)
 		m.Ack()
-		cancel()
 	})
 
 	if err != nil {
