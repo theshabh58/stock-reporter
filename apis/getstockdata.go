@@ -9,7 +9,7 @@ import (
 )
 
 //GetStockData fetches stock data from Tiingo stock API
-func GetStockData(ticker string) string {
+func GetStockData(ticker string) ([]StockData, error) {
 	tiingoAPIURL := "https://api.tiingo.com/tiingo/daily/"
 	apiRoute := "/prices?"
 	apiToken := os.Getenv("TIINGO_API_TOKEN")
@@ -17,13 +17,13 @@ func GetStockData(ticker string) string {
 	resp, err := http.Get(tiingoAPIURL + ticker + apiRoute + apiToken)
 	if err != nil {
 		log.Fatalf("Error retriving data from stocks api %v", err)
-		return ""
+		return nil, err
 	}
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
-		return ""
+		return nil, err
 	}
 
 	defer resp.Body.Close()
@@ -31,14 +31,12 @@ func GetStockData(ticker string) string {
 	var data []StockData
 
 	err = json.Unmarshal(respBody, &data)
-	data[0].StockTicker = ticker
-
 	if err != nil {
 		log.Fatalln(err)
-		return ""
+		return nil, err
 	}
 
-	stockData, _ := json.Marshal(data)
+	data[0].StockTicker = ticker
 
-	return string(stockData)
+	return data, nil
 }

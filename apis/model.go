@@ -4,9 +4,10 @@ import "time"
 
 //StockReport model
 type StockReport struct {
-	ID     string  `json:"id" firestore:"-"`
-	User   User    `json:"user" firestore:"user"`
-	Stocks []Stock `json:"stocks" firestore:"stocks"`
+	ID          string      `json:"id" firestore:"-"`
+	User        User        `json:"user" firestore:"user"`
+	Stocks      []Stock     `json:"stocks" firestore:"stocks"`
+	StockReport []StockData `json:"stockReport" firestore:"-"`
 }
 
 //Stock model

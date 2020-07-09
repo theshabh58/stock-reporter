@@ -1,23 +1,23 @@
-package pubsub
+package apis
 
 import (
 	"context"
 	"fmt"
-	"io"
+	"os"
 	"time"
 
 	"cloud.google.com/go/pubsub"
 )
 
 //PullStockPriceMessages pull messages from a subscribed topic
-func PullStockPriceMessages(w io.Writer, projectID, subscriberID string) error {
-	ctx := context.Background()
-	client, err := GetPubSubClient(ctx, projectID)
+func PullStockPriceMessages(ctx context.Context) error {
+
+	client, err := GetPubSubClient(ctx, os.Getenv("PROJECT_ID"))
 	if err != nil {
 		return fmt.Errorf("Failed to create new pubsub client %v", err)
 	}
 
-	sub := client.Subscription(subscriberID)
+	sub := client.Subscription(os.Getenv("SUBSCRIPTION_ID"))
 
 	cctx, cancel := context.WithTimeout(ctx, 20000*time.Millisecond)
 	defer cancel()
