@@ -1,2 +1,7 @@
 /apis/credentials.json
+.vscode
+.env
 .DS_Store
+.gcloudignore
+vendor
+cmd

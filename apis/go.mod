@@ -4,5 +4,5 @@ go 1.14
 
 require (
 	cloud.google.com/go/firestore v1.2.0
-	cloud.google.com/go/pubsub v1.4.0 // indirect
+	cloud.google.com/go/pubsub v1.5.0
 )
