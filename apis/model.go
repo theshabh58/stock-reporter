@@ -24,10 +24,10 @@ type User struct {
 
 //StockData model
 type StockData struct {
-	Ticker       string    `json:"ticker" firestore:"-"`
-	LowestPrice  float64   `json:"low" firestore:"lowestPrice"`
-	HighestPrice float64   `json:"high" firestore:"highestPrice"`
-	OpeningPrice float64   `json:"open" firestore:"openingPrice"`
-	ClosingPrice float64   `json:"close" firestore:"closingPrice"`
-	Date         time.Time `json:"date" firestore:"date"`
+	Ticker       string    `json:"ticker"`
+	LowestPrice  float64   `json:"low"`
+	HighestPrice float64   `json:"high"`
+	OpeningPrice float64   `json:"open"`
+	ClosingPrice float64   `json:"close"`
+	Date         time.Time `json:"date"`
 }
