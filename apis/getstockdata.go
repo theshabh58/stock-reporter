@@ -36,7 +36,7 @@ func GetStockData(ticker string) ([]StockData, error) {
 		return nil, err
 	}
 
-	data[0].StockTicker = ticker
+	data[0].Ticker = ticker
 
 	return data, nil
 }

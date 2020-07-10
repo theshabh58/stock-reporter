@@ -24,7 +24,7 @@ type User struct {
 
 //StockData model
 type StockData struct {
-	StockTicker  string    `json:"stockName" firestore:"stockName"`
+	Ticker       string    `json:"ticker" firestore:"-"`
 	LowestPrice  float64   `json:"low" firestore:"lowestPrice"`
 	HighestPrice float64   `json:"high" firestore:"highestPrice"`
 	OpeningPrice float64   `json:"open" firestore:"openingPrice"`
