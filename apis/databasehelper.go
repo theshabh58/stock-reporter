@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"cloud.google.com/go/firestore"
+	"google.golang.org/api/iterator"
 )
 
 //Database struct for database operationss
@@ -21,6 +22,32 @@ func ConnectToDatabase(ctx context.Context, projectID string) (*Database, error)
 	}
 
 	return &Database{Client: dbClient}, nil
+}
+
+//GetStockReports gets all the stock reports
+func (db *Database) GetStockReports(ctx context.Context, collectionName string) ([]StockReport, error) {
+	var result []StockReport = make([]StockReport, 0)
+
+	//Get all the stock reports
+	iter := db.Client.Collection(collectionName).Documents(ctx)
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+
+		//Decode the document and add to the list of results
+		var stockReport StockReport
+		doc.DataTo(&stockReport)
+		stockReport.ID = doc.Ref.ID
+
+		result = append(result, stockReport)
+	}
+
+	return result, nil
 }
 
 //InsertStockReport inserts a new stock report into the database
