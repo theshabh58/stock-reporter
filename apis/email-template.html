@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <style>
+            h3{
+                text-decoration: underline;
+            }
+            .inline {
+                display: inline;
+            }
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+            }
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+            tr:nth-child(even) {
+            background-color: #dddddd;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>Stock-Data:</h3>
+        <table>
+            <tr>
+                <th>Ticker</th>
+                <th>Closing Price</th>
+                <th>Opening Price</th>
+                <th>Lowest Price</th>
+                <th>Highest Price</th>
+            </tr>
+            {{range .StockReport}}
+            <tr>
+                <td>{{.Ticker}}</td>
+                <td>{{.ClosingPrice}}</td>
+                <td>{{.OpeningPrice}}</td>
+                <td>{{.LowestPrice}}</td>
+                <td>{{.HighestPrice}}</td>
+            </tr>
+            {{end}}
+        </table>
+    </body>
+</html>
