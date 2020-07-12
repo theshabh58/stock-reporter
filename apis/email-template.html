@@ -26,18 +26,20 @@
         <table>
             <tr>
                 <th>Ticker</th>
-                <th>Closing Price</th>
-                <th>Opening Price</th>
-                <th>Lowest Price</th>
-                <th>Highest Price</th>
+                <th>Lowest-Price</th>
+                <th>Highest-Price</th>
+                <th>Opening-Price</th>
+                <th>Closing-Price</th>
+                <th>Date</th>
             </tr>
-            {{range .StockReport}}
+            {{range $element := .StockReport}}
             <tr>
-                <td>{{.Ticker}}</td>
-                <td>{{.ClosingPrice}}</td>
-                <td>{{.OpeningPrice}}</td>
-                <td>{{.LowestPrice}}</td>
-                <td>{{.HighestPrice}}</td>
+                <td>{{$element.Ticker}}</td>
+                <td>{{$element.LowestPrice}}</td>
+                <td>{{$element.HighestPrice}}</td>
+                <td>{{$element.OpeningPrice}}</td>
+                <td>{{$element.ClosingPrice}}</td>
+                <td>{{$element.Date}}</td>
             </tr>
             {{end}}
         </table>
