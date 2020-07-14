@@ -88,7 +88,7 @@ func populateRequestBody(report StockReport) EmailRequest {
 	req.Content = []ContentType{{Type: "text/html", Value: "1.1"}}
 	req.Message = []Personalizations{{[]UserEmails{{EmailAddress: report.User.Email, Name: fullName}}, Report{StockInfo: report.StockReport}}}
 	req.From = map[string]string{"email": os.Getenv("FROM_EMAIL")}
-	req.TemplateID = os.Getenv("TEMPLATE_ID")
+	req.TemplateID = os.Getenv("STOCK_REPORT_TEMPLATE_ID")
 
 	return req
 }
