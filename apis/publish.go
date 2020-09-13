@@ -15,7 +15,7 @@ type PubSubMessage struct {
 	Data []byte `json:"data"`
 }
 
-//PublishStockData used to publish stock data to topic
+//PublishStockData adds stock data to a given topic
 func PublishStockData(ctx context.Context, msg PubSubMessage) error {
 
 	var report StockReport
@@ -30,10 +30,10 @@ func PublishStockData(ctx context.Context, msg PubSubMessage) error {
 	for _, v := range report.Stocks {
 		data, err := GetStockData(v.Ticker)
 		if err != nil {
-			log.Fatalf("error fetching stock data from tiingo api: %v", err)
+			log.Fatalf("error fetching stock data: %v", err)
 			return err
 		}
-		report.StockReport = append(report.StockReport, data...)
+		report.StockReport = append(report.StockReport, data)
 	}
 
 	//publish stock data to topic
@@ -61,6 +61,7 @@ func publishStockDataToTopic(ctx context.Context, report StockReport) error {
 		return err
 	}
 
+	fmt.Printf("Publish msg: %v", message)
 	r := topic.Publish(ctx, &pubsub.Message{
 		Data: []byte(message),
 	})

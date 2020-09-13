@@ -1,7 +1,5 @@
 package apis
 
-import "time"
-
 //StockReport model
 type StockReport struct {
 	ID          string      `json:"id" firestore:"-"`
@@ -24,10 +22,11 @@ type User struct {
 
 //StockData model
 type StockData struct {
-	Ticker       string    `json:"ticker"`
-	LowestPrice  float64   `json:"low"`
-	HighestPrice float64   `json:"high"`
-	OpeningPrice float64   `json:"open"`
-	ClosingPrice float64   `json:"close"`
-	Date         time.Time `json:"date"`
+	CompanyName   string  `json:"companyName"`
+	LowestPrice   float64 `json:"low"`
+	HighestPrice  float64 `json:"high"`
+	OpeningPrice  float64 `json:"open"`
+	ClosingPrice  float64 `json:"close"`
+	PeRatio       float32 `json:"peRatio"`
+	ChangePercent float64 `json:"changePercent"`
 }
