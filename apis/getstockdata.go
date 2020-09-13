@@ -9,34 +9,34 @@ import (
 )
 
 //GetStockData fetches stock data from Tiingo stock API
-func GetStockData(ticker string) ([]StockData, error) {
-	tiingoAPIURL := "https://api.tiingo.com/tiingo/daily/"
-	apiRoute := "/prices?"
-	apiToken := os.Getenv("TIINGO_API_TOKEN")
+//https://cloud.iexapis.com/stable/stock
+func GetStockData(ticker string) (StockData, error) {
+	var data StockData
+	iexAPIURL := "https://cloud.iexapis.com"
+	apiRoute := "/stable/stock/"
+	reqType := "/quote?"
+	apiToken := os.Getenv("IEX_API_TOKEN")
+	queryParams := "&displayPercent=true"
+	url := iexAPIURL + apiRoute + ticker + reqType + apiToken + queryParams
 
-	resp, err := http.Get(tiingoAPIURL + ticker + apiRoute + apiToken)
+	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatalf("Error retriving data from stocks api %v", err)
-		return nil, err
+		log.Fatalf("Error retriving data from iexCloud %v", err)
+		return data, err
 	}
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
-		return nil, err
+		return data, err
 	}
-
 	defer resp.Body.Close()
-
-	var data []StockData
 
 	err = json.Unmarshal(respBody, &data)
 	if err != nil {
 		log.Fatalln(err)
-		return nil, err
+		return data, err
 	}
-
-	data[0].Ticker = ticker
 
 	return data, nil
 }
